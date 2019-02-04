@@ -1,9 +1,6 @@
 # Ce programme revoie l'heure en Tunisien
 from datetime import datetime
 
-KHAREJ = "خارج"
-MAHARRARCH = "ما حرَرْش"
-
 DRAJ = ["","درج","درجين","ربع","أربعة","خمسة","نص","سبعة","أربعة","ربع","درجين","درج",""]
 SEAA = ["نص الليل","ماضي ساعة","الساعتين","ماضي تلاثة","الأربعة","الخمسة","الستة","السبعة","الثمنية","التسعة","العشرة","الحداش","الأول"]
 ZID_SEAA = [0,0,0,0,0,0,0,0,1,1,1,1,1]
@@ -15,10 +12,11 @@ def main():
     secondes_tawa = int(now.strftime("%S"))
     minutes_tawa = int(now.strftime("%M"))
     heures_tawa = int(now.strftime("%H"))
+    
     drajj_tawa = ((minutes_tawa*60) + secondes_tawa + 150) // 300
     kharej_wala_ma_harrarch_tawa = minutes_tawa - (drajj_tawa*5) + 3
-
     heures_tawa = heures_tawa + ZID_SEAA[drajj_tawa]
+    
     if heures_tawa != 12:
         heures_tawa = heures_tawa % 12
 
