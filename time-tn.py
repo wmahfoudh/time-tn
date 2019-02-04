@@ -1,4 +1,5 @@
-# Ce programme revoie l'heure en Tunisien
+#!/usr/bin/env python3
+
 from datetime import datetime
 
 DRAJ = ["","درج","درجين","ربع","أربعة","خمسة","نص","سبعة","أربعة","ربع","درجين","درج",""]
