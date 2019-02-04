@@ -1,2 +1,2 @@
 # time-tn
-Affiche l'heure en TUNISIEN
+Revoie l'heure en "Tunisien"
