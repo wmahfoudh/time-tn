@@ -50,6 +50,7 @@ namespace time_tn
             if (Settings.Default.WL!= null)
             {
                 this.Location = Settings.Default.WL;
+                maj_display();
             }
         }
 
@@ -59,7 +60,7 @@ namespace time_tn
             Settings.Default.Save();
         }
 
-        private void timer_timer_Tick(object sender, EventArgs e)
+        private void maj_display()
         {
             DateTime dt = DateTime.Now;
             int h = dt.Hour;
@@ -76,7 +77,12 @@ namespace time_tn
             string tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
 
             Regex trimmer = new Regex(@"\s\s+");
-            lb_time_tn.Text = trimmer.Replace(string.Concat(tn_seaa, " ", tn_prefixe_draj, " ", tn_draj, " ", tn_kharej_wala_ma_harrarch)," ");
+            lb_time_tn.Text = trimmer.Replace(string.Concat(tn_seaa, " ", tn_prefixe_draj, " ", tn_draj, " ", tn_kharej_wala_ma_harrarch), " ");
+        }
+
+        private void timer_timer_Tick(object sender, EventArgs e)
+        {
+            maj_display();
         }
     }
 }
