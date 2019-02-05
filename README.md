@@ -9,6 +9,8 @@ L'heure en "Tunisien" genre :
 
 ![1200](./binaries/1200.jpg "الأول ما حررش")
 
-Pour le script Python, l'affichage des lettres en Arabe dans la console Windows reste problématique, il faut déjà changer le code page en ``UTF-8`` avec ``chcp 65001`` mais cela ne fonctionne pas tout le temps. Sous Linux, pas de problème !
+## Script Python
+L'affichage des lettres en Arabe dans la console **Windows** reste problématique, il faut déjà changer le code page en ``UTF-8`` avec ``chcp 65001`` et trafiquer la base de registres pour changer la police de la console. Cela ne vaut varimant pas la peine ! Sous **Linux**, pas de problème !
 
-L'application Windows utilise la police Google [Noto Kufi Arabic](https://noto-website-2.storage.googleapis.com/pkgs/NotoKufiArabic-hinted.zip)
+## Application Windows
+La fenêtre est déplaçable avec la souris. Pour sortir du programme: click droit. L'application utilise la police Google [Noto Kufi Arabic](https://noto-website-2.storage.googleapis.com/pkgs/NotoKufiArabic-hinted.zip)
