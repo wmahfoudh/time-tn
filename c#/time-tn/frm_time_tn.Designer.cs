@@ -62,7 +62,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.LemonChiffon;
+            this.BackColor = System.Drawing.Color.Gold;
             this.ClientSize = new System.Drawing.Size(298, 56);
             this.ControlBox = false;
             this.Controls.Add(this.lb_time_tn);
