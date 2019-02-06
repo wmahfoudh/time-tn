@@ -10,7 +10,8 @@ La bonne vieille manière de dire l'heure *en Tunisien*
 ![1155](./binaries/1155.png "الأول غير درج")
 
 ## Script Python
-L'affichage des lettres en Arabe dans la console **Windows** reste problématique, il faut déjà changer le code page en ``UTF-8`` avec ``chcp 65001`` et trafiquer la base de registres pour changer la police de la console. Cela ne vaut varimant pas la peine ! Sous **Linux**, pas de problème !
+- Linux : il faut que la police *terminal* ou *tty* supporte les caractères Arabes
+- Windows : l'affichage des lettres en Arabe dans la console *cmd* ou *powershell* reste problématique, il faut déjà changer le code page en ``UTF-8`` avec ``chcp 65001`` et [trafiquer la base de registres](https://www.howtogeek.com/howto/windows-vista/stupid-geek-tricks-enable-more-fonts-for-the-windows-command-prompt/) pour changer la police de la console. *Cela ne vaut varimant pas la peine !*
 
 ## Application Windows
 - La bulle est déplaçable avec la souris (bouton gauche)
