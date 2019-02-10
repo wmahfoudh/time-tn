@@ -44,10 +44,11 @@
             this.lb_time_tn.Location = new System.Drawing.Point(0, 0);
             this.lb_time_tn.Margin = new System.Windows.Forms.Padding(6);
             this.lb_time_tn.Name = "lb_time_tn";
+            this.lb_time_tn.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lb_time_tn.Size = new System.Drawing.Size(25, 38);
             this.lb_time_tn.TabIndex = 0;
             this.lb_time_tn.Text = "-";
-            this.lb_time_tn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lb_time_tn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lb_time_tn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lb_time_tn_MouseDown);
             // 
             // timer_timer
@@ -63,7 +64,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Gold;
-            this.ClientSize = new System.Drawing.Size(298, 56);
+            this.ClientSize = new System.Drawing.Size(117, 45);
             this.ControlBox = false;
             this.Controls.Add(this.lb_time_tn);
             this.Font = new System.Drawing.Font("Noto Kufi Arabic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -72,9 +73,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frm_time_tn";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frm_time_tn_FormClosing);

@@ -77,7 +77,15 @@ namespace time_tn
             string tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
 
             Regex trimmer = new Regex(@"\s\s+");
-            lb_time_tn.Text = trimmer.Replace(string.Concat(tn_seaa, " ", tn_prefixe_draj, " ", tn_draj, " ", tn_kharej_wala_ma_harrarch), " ");
+            string new_Time = trimmer.Replace(string.Concat(tn_seaa, " ", tn_prefixe_draj, " ", tn_draj, " ", tn_kharej_wala_ma_harrarch), " ");
+            if (new_Time != lb_time_tn.Text)
+            {
+                int width_before_update = this.Width;
+                lb_time_tn.Text = new_Time;
+                int width_after_update = this.Width;
+                this.Left -= (width_after_update - width_before_update);
+            }
+            
         }
 
         private void timer_timer_Tick(object sender, EventArgs e)
