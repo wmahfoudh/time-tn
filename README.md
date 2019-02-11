@@ -35,7 +35,7 @@ Les minutes n’ont pas leur place, l’unité est le **DRAJ** qui vaut 5 minute
 De 5 à 35 minutes on dir l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
 -	5 minutes = درج DRAJ
 -	10 minutes = درجين DARJIN
--	15 minutes =  ربعRBO3 (mot qui veut dire un quart d’heure)
+-	15 minutes = ربع RBO3 (mot qui veut dire un quart d’heure)
 -	20 minutes = أربعة ARB3A (quatre en Arabe)
 -	25 minutes = خمسة KHAMSA (cinq en Arabe)
 -	30 minutes = ستة SETTA (six en Arabe)
