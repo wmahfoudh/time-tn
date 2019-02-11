@@ -27,6 +27,7 @@ Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle rep
 -	9 heures = التسعة (neuf heures)
 -	10 heures = العشرة (dix heures)
 -	11 heures = الحداش (onze heures)
+
 A part midi et minuit, l’heure du soir est exprimée de la même manière que l’heure du matin
 
 ## Les règles pour les minutes
