@@ -10,7 +10,7 @@ La bonne vieille manière de dire l'heure *en Tunisien*
 ![1155](./binaries/1155.png "الأول غير درج")
 
 ## Introduction
-Les tunisiens ont une manière particulière d’exprimer l’heure dont certaines subtilités disparaissent peu à peu.  Le Tunisien est un mélange d’Arabe, Berbère, Français, Italien, etc. à dominante Arabe
+Le Tunisien est un mélange d’Arabe, Berbère, Français, Italien, etc. à dominante Arabe. Les tunisiens ont une manière singulière d’exprimer l’heure. Ce projet vise à décrire, documenter et implémenter cette manière pour la rendre plus accessible
 
 ## Les règles pour les heures
 Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente, ce qui suit s'applique
@@ -30,7 +30,7 @@ Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle rep
 -	A part midi et minuit, l’heure du soir est exprimée de la même manière que l’heure du matin
 
 ## Les règles pour les minutes
-Les minutes n’ont pas leur place pour dire l’heure, l’unité est le **DRAJ** qui vaut 5 minutes
+Les minutes n’ont pas leur place, l’unité est le **DRAJ** qui vaut 5 minutes
 
 De 5 à 35 minutes on dir l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
 -	5 minutes = درج DRAJ
@@ -48,7 +48,7 @@ De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** su
 -	55 minutes = درج DRAJ
 
 ## la touche finale
-Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** (sortant) et **ما حررش** (pas encore arrivé). **خارج** (sortant) et **ما حررش** sont ajoutés à la discrétion de celui qui lit l’heure, à part le bon sens, il n’existe pas de règles pour les utiliser
+Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** (sortant) et **ما حررش** (pas encore arrivé). Ces termes sont ajoutés à la discrétion de celui qui lit l’heure : à part le bon sens, il n’existe pas de règles pour les utiliser
 
 Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minutes (DRAJ)
 - entre DRAJ-2:30 m:s et DRAJ-1:30 m:s ما حررش est ajouté
