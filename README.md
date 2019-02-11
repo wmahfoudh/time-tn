@@ -32,7 +32,7 @@ Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle rep
 ## Les règles pour les minutes
 Les minutes n’ont pas leur place, l’unité est le **DRAJ** qui vaut 5 minutes
 
-De 5 à 35 minutes on dir l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
+De 5 à 35 minutes on dit l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
 -	5 minutes = درج DRAJ
 -	10 minutes = درجين DARJIN
 -	15 minutes = ربع RBO3 (mot qui veut dire un quart d’heure)
