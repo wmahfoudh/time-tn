@@ -13,7 +13,7 @@ La bonne vieille manière de dire l'heure *en Tunisien*
 Le Tunisien est un mélange d’Arabe, Berbère, Français, Italien, etc. à dominante Arabe. Les tunisiens ont une manière singulière d’exprimer l’heure. Ce projet vise à décrire, documenter et implémenter cette manière pour la rendre plus accessible
 
 ## Les règles pour les heures
-Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente, ce qui suit s'applique
+Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente
 -	Midi = الأول (traduction = le premier)
 -	Minuit = نص الليل (le milieu de la nuit)
 -	1 heure = ماضي ساعة (traduction littérale : le « passé » d’une heure)
