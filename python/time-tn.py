@@ -26,7 +26,6 @@ def main():
     tn_draj = DRAJ[drajj_tawa]
     tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa]
 
-    print(tn_kharej_wala_ma_harrarch, tn_draj, tn_prefixe_draj, tn_seaa)
     print(tn_seaa, tn_prefixe_draj, tn_draj, tn_kharej_wala_ma_harrarch)
 
 if __name__== "__main__":
