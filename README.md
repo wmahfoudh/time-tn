@@ -16,8 +16,8 @@ Le Tunisien est un mélange d’Arabe, Berbère, Français, Italien, etc. à dom
 Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente, ce qui suit s'applique
 -	Midi = الأول (traduction = le premier)
 -	Minuit = نص الليل (le milieu de la nuit)
--	1 heure = ماضي ساعة (le « passé » d’une heure)
--	2 heures = الساعتين deux heures
+-	1 heure = ماضي ساعة (traduction littérale : le « passé » d’une heure)
+-	2 heures = الساعتين (deux heures)
 -	3 heures = ماضي تلاثة (le « passé » de trois heures) ou التلاثة (trois heures)
 -	4 heures = الأربعة (quatre heures)
 -	5 heures = الخمسة (cinq heures)
@@ -27,24 +27,24 @@ Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle rep
 -	9 heures = التسعة (neuf heures)
 -	10 heures = العشرة (dix heures)
 -	11 heures = الحداش (onze heures)
--	A part midi et minuit, l’heure du soir est exprimée de la même manière que l’heure du matin
+A part midi et minuit, l’heure du soir est exprimée de la même manière que l’heure du matin
 
 ## Les règles pour les minutes
 Les minutes n’ont pas leur place, l’unité est le **DRAJ** qui vaut 5 minutes
 
 De 5 à 35 minutes on dit l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
 -	5 minutes = درج DRAJ
--	10 minutes = درجين DARJIN
--	15 minutes = ربع RBO3 (mot qui veut dire un quart d’heure)
--	20 minutes = أربعة ARB3A (quatre en Arabe)
--	25 minutes = خمسة KHAMSA (cinq en Arabe)
--	30 minutes = ستة SETTA (six en Arabe)
--	35 minutes = سبعة SAB3A (sept en Arabe)
+-	10 minutes = درجين DARJIN (deux DRAJ)
+-	15 minutes = ربع RBO3 ou R'BOA (mot qui veut dire un quart d’heure, c'est une exception à la règle)
+-	20 minutes = أربعة ARB3A ou ARBAA (quatre)
+-	25 minutes = خمسة KHAMSA (cinq)
+-	30 minutes = ستة SETTA (six)
+-	35 minutes = سبعة SAB3A ou SABAA (sept)
 
 De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** suivi du nombres de **DRAJ** selon ce qui suit
-- 40 minutes = أربعة ARB3A (quatre en Arabe)
-- 45 minutes = ربع RBO3 (un quart d’heure)
-- 50 minutes = درجين DARJIN
+- 40 minutes = أربعة ARB3A ou ARBAA (quatre)
+- 45 minutes = ربع RBO3 ou R'BOA (un quart d’heure, une seconde exception à la règle)
+- 50 minutes = درجين DARJIN (deux DRAJ)
 -	55 minutes = درج DRAJ
 
 ## la touche finale
