@@ -43,20 +43,23 @@ namespace time_tn
             {
                 Application.Exit();
             }
+            Settings.Default.WL = new Point(this.Location.X , this.Location.Y);
+            Settings.Default.Width = this.Width;
         }
 
         private void frm_time_tn_Load(object sender, EventArgs e)
         {
             if (Settings.Default.WL!= null)
             {
-                this.Location = Settings.Default.WL;
                 maj_display();
+                this.Location = new Point(Settings.Default.WL.X - this.Width + Settings.Default.Width, Settings.Default.WL.Y);
             }
         }
 
         private void frm_time_tn_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Default.WL= this.Location;
+            Settings.Default.WL = new Point(this.Location.X , this.Location.Y);
+            Settings.Default.Width = this.Width;
             Settings.Default.Save();
         }
 
