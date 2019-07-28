@@ -49,6 +49,7 @@
             this.lb_time_tn.TabIndex = 0;
             this.lb_time_tn.Text = "-";
             this.lb_time_tn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lb_time_tn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lb_time_tn_MouseClick);
             this.lb_time_tn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lb_time_tn_MouseDown);
             // 
             // timer_timer

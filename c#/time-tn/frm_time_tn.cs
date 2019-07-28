@@ -39,10 +39,6 @@ namespace time_tn
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
-            else if (e.Button == MouseButtons.Right)
-            {
-                Application.Exit();
-            }
             Settings.Default.WL = new Point(this.Location.X , this.Location.Y);
             Settings.Default.Width = this.Width;
         }
@@ -94,6 +90,14 @@ namespace time_tn
         private void timer_timer_Tick(object sender, EventArgs e)
         {
             maj_display();
+        }
+
+        private void lb_time_tn_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Application.Exit();
+            }
         }
     }
 }
