@@ -11,7 +11,7 @@ La bonne vieille manière de lire l'heure *en Tunisien*
 ![1155](./binaries/1155.png "الأول غير درج")
 
 ## Introduction
-Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. Ce projet la décrit et documente. Il présente aussi une implémentation en Python, en C# et en C++. Celle-ci servira pour la réalisation de l'horloge à mots (word clock) **TnClock** à l'aide d'un esp8266... Stay tuned ;)
+Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. Ce projet la décrit et documente. Il présente aussi une implémentation en Python, en C# et en C++. Cette dernière sert à la réalisation de l'horloge à mots (word clock) **TnClock** à l'aide d'un esp8266...
 
 ## Les règles pour les heures
 Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente
@@ -49,8 +49,8 @@ De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** su
 - 50 minutes = درجين DARJIN (deux DRAJ)
 - 55 minutes = درج DRAJ
 
-## la touche finale
-Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** (sortant ou en surplus) et **ما حررش** (pas encore arrivé) : à part le bon sens, il n’existe vraimant pas de règle pour les utiliser
+## La touche finale
+Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** KHAREJ (sortant ou qui dépasse) et **ما حررش** MA HARRARCH (pas encore arrivé). A part le bon sens, il n’existe vraimant pas de règle pour utiliser **خارج** et **ما حررش**
 
 Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minutes (DRAJ)
 - entre DRAJ-2:30 m:s et DRAJ-1:30 m:s ما حررش est ajouté
