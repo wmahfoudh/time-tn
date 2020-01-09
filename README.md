@@ -56,6 +56,8 @@ Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minute
 - entre DRAJ-2:30 m:s et DRAJ-1:30 m:s ما حررش est ajouté
 -	entre DRAJ-1:00 m:s et DRAJ+1:00 m:s rien n’est ajouté
 -	entre DRAJ+1:00 m:s et DRAJ+2:30 m:s خارج est ajouté
+**Exemple entre 5 et 15 minutes**
+![desc](./binaries/desc.png "exemple ما حررش et خارج entre 5 et 15 minutes")
 
 ## Script Python
 - Linux : il faut que la police *terminal* ou *tty* supporte les caractères Arabes, c'est généralement le cas de toutes les distributions
