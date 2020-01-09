@@ -53,10 +53,12 @@ De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** su
 Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** KHAREJ (sortant ou qui dépasse) et **ما حررش** MA HARRARCH (pas encore arrivé). A part le bon sens, il n’existe vraimant pas de règle pour utiliser **خارج** et **ما حررش**
 
 Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minutes (DRAJ)
-- entre DRAJ-2:30 m:s et DRAJ-1:30 m:s ما حررش est ajouté
+
+- entre DRAJ-2:30 m:s et DRAJ-1:00 m:s ما حررش est ajouté
 -	entre DRAJ-1:00 m:s et DRAJ+1:00 m:s rien n’est ajouté
 -	entre DRAJ+1:00 m:s et DRAJ+2:30 m:s خارج est ajouté
-**Exemple entre 5 et 15 minutes**
+
+### Exemple
 ![desc](./binaries/desc.png "exemple ما حررش et خارج entre 5 et 15 minutes")
 
 ## Script Python
