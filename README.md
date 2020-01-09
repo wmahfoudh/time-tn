@@ -5,7 +5,7 @@ La bonne vieille manière de dire l'heure *en Tunisien*
 
 ![0450](./binaries/0450.png "الخمسة غير درجين خارج")
 
-![0915](./binaries/0915.png "التسعة و ربع خارج")
+![0020](./binaries/0020.png "نص الليل و أربعة")
 
 ![1155](./binaries/1155.png "الأول غير درج")
 
