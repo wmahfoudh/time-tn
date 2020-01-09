@@ -10,7 +10,7 @@ const char wifiInitialApPassword[] = "welovetn";
 #define NUMBER_LEN 5
 
 // -- Configuration specific key. The value should be modified if config structure was changed.
-#define CONFIG_VERSION "x29decal"
+#define CONFIG_VERSION "bango"
 
 // -- When CONFIG_PIN is pulled to ground on startup, the Thing will use the initial
 //      password to buld an AP. (E.g. in case of lost password)
@@ -52,6 +52,41 @@ IotWebConfParameter secondsparam = IotWebConfParameter("Set second", "setSecond"
 IotWebConfSeparator separator_clock = IotWebConfSeparator("Clock settings");
 IotWebConfParameter maxbrightness = IotWebConfParameter("Max brightness", "maxBrightness", maxBrightness, NUMBER_LEN, "number", "0..255", NULL, "min='0' max='255' step='1'");
 
+// -- Javascript block will be added to the header.
+const char CUSTOMHTML_SCRIPT_INNER[] PROGMEM = "\n\
+document.addEventListener('DOMContentLoaded', function(event) {\n\
+  let elements = document.querySelectorAll('input[type=\"password\"]');\n\
+  for (let p of elements) {\n\
+    let btn = document.createElement('INPUT'); btn.type = 'button'; btn.value = '🔓'; btn.style.width = 'auto'; p.style.width = '83%'; p.parentNode.insertBefore(btn,p.nextSibling);\n\
+    btn.onclick = function() { if (p.type === 'password') { p.type = 'text'; btn.value = '🔒'; } else { p.type = 'password'; btn.value = '🔓'; } }\n\
+  };\n\
+});\n";
+// -- HTML element will be added inside the body element.
+const char CUSTOMHTML_BODY_INNER[] PROGMEM = "<div><img src='data:image/png;base64, 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'/></div>\n";
+
+// -- This is an OOP technique to override behaviour of the existing
+// IotWebConfHtmlFormatProvider. Here two method are overriden from
+// the original class. See IotWebConf.h for all potentially overridable
+// methods of IotWebConfHtmlFormatProvider .
+class CustomHtmlFormatProvider : public IotWebConfHtmlFormatProvider
+{
+protected:
+  String getScriptInner() override
+  {
+    return
+      IotWebConfHtmlFormatProvider::getScriptInner() +
+      String(FPSTR(CUSTOMHTML_SCRIPT_INNER));
+  }
+  String getBodyInner() override
+  {
+    return
+      String(FPSTR(CUSTOMHTML_BODY_INNER)) +
+      IotWebConfHtmlFormatProvider::getBodyInner();
+  }
+};
+// -- An instance must be created from the class defined above.
+CustomHtmlFormatProvider customHtmlFormatProvider;
+
 void setup() 
 {
   Serial.begin(115200);
@@ -71,6 +106,8 @@ void setup()
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setFormValidator(&formValidator);
   iotWebConf.getApTimeoutParameter()->visible = true;
+    // -- Applying the new HTML format to IotWebConf.
+  iotWebConf.setHtmlFormatProvider(&customHtmlFormatProvider);
   // -- Initializing the configuration.
   iotWebConf.init();
   // -- Set up required URL handlers on the web server.
@@ -103,28 +140,14 @@ void handleRoot()
     return;
   }
   String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
-  s += "<title>TimeTN Parameters</title></head><body>TimeTN Parameters";
-  s += "<ul>";
-  s += "<li>Time zone: ";
-  s += atof(timeZoneValue);
-  s += "</li>";
-  s += "<li>Current time: ";
-  s += globalHours;
-  s += ":";
-  s += globalMinutes;
-  s += ":";
-  s += globalSeconds;      
-  s += "</li>";
-  s += "<li>Max brightness: ";
-  s += globalMaxBrightness;
-  s += "</li>";
-  s += "<li>Update interval: ";
-  s += globalUpdateInterval;
-  s += "</li>";    
-  s += "</ul>";
-  s += "Go to <a href='config'>configure page</a> to change values.";
+  s += "<title>TnClock Parameters</title>";
+  s += "<style>@font-face {font-family: NotoKufiArabic; src: url(//fonts.googleapis.com/earlyaccess/notokufiarabic.css);}";
+  s += "* {font-family: 'Noto Kufi Arabic', sans-serif;}</style></head><body style='background-color:#ffd700;'>";
+  s += FPSTR(CUSTOMHTML_BODY_INNER);
+  s += "<p style='font-size:15vw; font-weight: 500; text-align:center'>حبيبي يا بندي</p>";
+  s += "<p style='font-size:2vw;'>Go to <a href='config'>configuration page</a> to change settings.</p>";
   s += "</body></html>\n";
-  server.send(200, "text/html", s);
+  server.send(200, "text/html; charset=UTF-8", s);
 }
 
 void configSaved()
