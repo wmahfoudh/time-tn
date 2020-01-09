@@ -11,7 +11,7 @@ La bonne vieille manière de lire l'heure *en Tunisien*
 ![1155](./binaries/1155.png "الأول غير درج")
 
 ## Introduction
-Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. Ce la décrit, documente et implémente pour la rendre plus accessible
+Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. Ce projet la décrit et documente. Il présente aussi une implémentation en Python, en C# et en C++. Celle-ci servira pour la réalisation de l'horloge à mots (word clock) **TnClock** à l'aide d'un esp8266... Stay tuned ;)
 
 ## Les règles pour les heures
 Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente
@@ -47,7 +47,7 @@ De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** su
 - 40 minutes = أربعة ARBAA (quatre)
 - 45 minutes = ربع R'BOA (un quart d’heure, une seconde exception à la règle)
 - 50 minutes = درجين DARJIN (deux DRAJ)
--	55 minutes = درج DRAJ
+- 55 minutes = درج DRAJ
 
 ## la touche finale
 Pour indiquer le temps avec plus de précision, on ajoute les termes **خارج** (sortant ou en surplus) et **ما حررش** (pas encore arrivé) : à part le bon sens, il n’existe vraimant pas de règle pour les utiliser
