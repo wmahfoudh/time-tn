@@ -1,5 +1,7 @@
 #include <IotWebConf.h>
 #include "uTimerLib.h"
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 // -- Initial name of the Thing. Used e.g. as SSID of the own Access Point.
 const char thingName[] = "TnClock";
@@ -23,6 +25,7 @@ const char wifiInitialApPassword[] = "welovetn";
 
 // -- Callback method declarations.
 void configSaved();
+void wifiConnected();
 boolean formValidator();
 
 DNSServer dnsServer;
@@ -112,6 +115,8 @@ void setup()
   
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setFormValidator(&formValidator);
+  iotWebConf.setWifiConnectionCallback(&wifiConnected);
+
   iotWebConf.getApTimeoutParameter()->visible = true;
     // -- Applying the new HTML format to IotWebConf.
   iotWebConf.setHtmlFormatProvider(&customHtmlFormatProvider);
@@ -120,6 +125,7 @@ void setup()
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
   server.on("/config", []{ iotWebConf.handleConfig(); });
+  server.on("/raw", handleRaw);
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
   TimerLib.setInterval_s(timerTick, 1);
   if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
@@ -130,6 +136,11 @@ void setup()
   {
     Serial.println("One or more parameter are out of range.");
   }
+}
+
+void handleRaw()
+{
+  server.send(200, "text/html; charset=UTF-8", globalTimeTN);
 }
 
 void loop() 
@@ -146,13 +157,14 @@ void handleRoot()
     // -- Captive portal request were already served.
     return;
   }
-  String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
+  String s = "<!DOCTYPE html><html lang=\"en\"><head><meta http-equiv=\"refresh\" content=\"5\">";
+  // String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
   s += "<title>Welcome to TnClock</title>";
   s += "<style>@font-face {font-family: NotoKufiArabic; src: url(//fonts.googleapis.com/earlyaccess/notokufiarabic.css);}";
   s += "* {font-family: 'Noto Kufi Arabic', sans-serif;}</style></head><body style='background-color:#ffd700;'>";
-  // s += FPSTR(CUSTOMHTML_BODY_INNER);
-  s += "<p style='font-size:8vw; font-weight: Bold; text-align:center'>الحداش غير درجين ما حررش</p>";
-  // s += "<p style='font-size:2vw;'>Go to <a href='config'>configuration page</a> to change settings.</p>";
+  s += "<p style='font-size:8vw; font-weight: Bold; text-align:center'>";
+  s += globalTimeTN;
+  s += "</p>";
   s += "</body></html>\n";
   server.send(200, "text/html; charset=UTF-8", s);
 }
@@ -162,7 +174,7 @@ void configSaved()
   Serial.println("Configuration was updated.");
 }
 
-String makeTimeTN()
+void makeTimeTN()
 {
   int drajj_tawa = ((globalMinutes * 60) + globalSeconds + 150) / 300;
   int kharej_wala_ma_harrarch_tawa = globalMinutes - (drajj_tawa * 5) + 3;
@@ -172,7 +184,31 @@ String makeTimeTN()
   String tn_prefixe_draj = DRAJ_PREFIXE[drajj_tawa];
   String tn_draj = DRAJ[drajj_tawa];
   String tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
-  
+  String new_Time = tn_seaa;
+  if (tn_prefixe_draj != "") { new_Time += " " + tn_prefixe_draj; }
+  if (tn_draj != "") { new_Time += " " + tn_draj; }
+  if (tn_kharej_wala_ma_harrarch != "") { new_Time += " " + tn_kharej_wala_ma_harrarch; }
+  if (new_Time != globalTimeTN) { updateTimeTN(new_Time); }
+}
+
+void updateTimeTN(String inputTime)
+{
+  globalTimeTN = inputTime;
+}
+
+void getInternetTime()
+{
+  WiFiUDP ntpUDP;
+  NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+  timeClient.update();
+  globalHours = timeClient.getHours();
+  Serial.print(globalHours);
+  Serial.print(":");
+  globalMinutes = timeClient.getMinutes();
+  Serial.print(globalMinutes);
+  Serial.print(":");  
+  globalSeconds = timeClient.getSeconds();
+  Serial.print(globalSeconds);  
 }
 
 boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
@@ -191,6 +227,12 @@ boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
   {
     return false;
   }
+}
+
+void wifiConnected()
+{
+  Serial.println("WiFi connected, updating time...");
+  getInternetTime();
 }
 
 boolean formValidator()
@@ -233,10 +275,13 @@ void timerTick()
   else
   {
     globalSeconds += 1;
-  }
+  }  
+  makeTimeTN();
   Serial.print(globalHours);
   Serial.print(":");
   Serial.print(globalMinutes);
   Serial.print(":");
-  Serial.println(globalSeconds);
+  Serial.print(globalSeconds);
+  Serial.print(" ");
+  Serial.println(globalTimeTN);
 }
