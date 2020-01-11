@@ -10,7 +10,7 @@ const char wifiInitialApPassword[] = "welovetn";
 #define NUMBER_LEN 5
 
 // -- Configuration specific key. The value should be modified if config structure was changed.
-#define CONFIG_VERSION "bango"
+#define CONFIG_VERSION "swed873"
 
 // -- When CONFIG_PIN is pulled to ground on startup, the Thing will use the initial
 //      password to buld an AP. (E.g. in case of lost password)
@@ -45,7 +45,7 @@ int globalUpdateInterval = 0;
 IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 IotWebConfSeparator separator_time = IotWebConfSeparator("Time settings");
 IotWebConfParameter timezomeparam = IotWebConfParameter("Time zone", "timeZone", timeZoneValue, NUMBER_LEN, "number", "e.g. 5.75", "0", "step='0.25'");
-IotWebConfParameter updateinterval = IotWebConfParameter("Update period", "updateInterval", UpdateInterval, NUMBER_LEN, "number", "0..59 minutes", NULL, "min='1' max='59' step='1'");
+IotWebConfParameter updateinterval = IotWebConfParameter("Update interval", "updateInterval", UpdateInterval, NUMBER_LEN, "number", "0..59 minutes", NULL, "min='1' max='59' step='1'");
 IotWebConfParameter hoursparam = IotWebConfParameter("Set hour", "setHour", setHoursValue, NUMBER_LEN, "number", "0..24", NULL, "min='0' max='23' step='1'");
 IotWebConfParameter minutesparam = IotWebConfParameter("Set minute", "setMinute", setMinutesValue, NUMBER_LEN, "number", "0..59", NULL, "min='0' max='59' step='1'");
 IotWebConfParameter secondsparam = IotWebConfParameter("Set second", "setSecond", setSecondsValue, NUMBER_LEN, "number", "0..59", NULL, "min='0' max='59' step='1'");
@@ -114,7 +114,7 @@ void setup()
   server.on("/", handleRoot);
   server.on("/config", []{ iotWebConf.handleConfig(); });
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
-  TimerLib.setInterval_s(each_second_function, 1);
+  TimerLib.setInterval_s(timerTick, 1);
   if (init_globals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
   {
     Serial.println("Parameters successfully initialized.");
@@ -140,12 +140,12 @@ void handleRoot()
     return;
   }
   String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
-  s += "<title>TnClock Parameters</title>";
+  s += "<title>Welcome to TnClock</title>";
   s += "<style>@font-face {font-family: NotoKufiArabic; src: url(//fonts.googleapis.com/earlyaccess/notokufiarabic.css);}";
   s += "* {font-family: 'Noto Kufi Arabic', sans-serif;}</style></head><body style='background-color:#ffd700;'>";
-  s += FPSTR(CUSTOMHTML_BODY_INNER);
-  s += "<p style='font-size:15vw; font-weight: 500; text-align:center'>حبيبي يا بندي</p>";
-  s += "<p style='font-size:2vw;'>Go to <a href='config'>configuration page</a> to change settings.</p>";
+  // s += FPSTR(CUSTOMHTML_BODY_INNER);
+  s += "<p style='font-size:8vw; font-weight: Bold; text-align:center'>الحداش غير درجين ما حررش</p>";
+  // s += "<p style='font-size:2vw;'>Go to <a href='config'>configuration page</a> to change settings.</p>";
   s += "</body></html>\n";
   server.send(200, "text/html; charset=UTF-8", s);
 }
@@ -188,7 +188,7 @@ boolean formValidator()
   return valid;
 }
 
-void each_second_function()
+void timerTick()
 {
   if (globalSeconds==59)
   {
