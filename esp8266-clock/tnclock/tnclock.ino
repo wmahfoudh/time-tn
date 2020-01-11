@@ -41,6 +41,13 @@ int globalSeconds = 0;
 long utcOffsetInSeconds = 0;
 int globalMaxBrightness = 0;
 int globalUpdateInterval = 0;
+String globalTimeTN = "";
+
+String DRAJ[13] = { "", "درج", "درجين", "ربع", "أربعة", "خمسة", "نص", "سبعة", "أربعة", "ربع", "درجين", "درج", "" };
+String SEAA[13] = { "نص الليل", "ماضي ساعة", "الساعتين", "ماضي تلاثة", "الأربعة", "الخمسة", "الستة", "السبعة", "الثمنية", "التسعة", "العشرة", "الحداش", "الأول" };
+int ZID_SEAA[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 };
+String DRAJ_PREFIXE[13] = { "", "و", "و", "و", "و", "و", "و", "و", "غير", "غير", "غير", "غير", "" };
+String KHAREJ_WALA_MA_HARRARCH[6] = { "ما حررش", "ما حررش", "", "", "خارج", "خارج" };
 
 IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 IotWebConfSeparator separator_time = IotWebConfSeparator("Time settings");
@@ -115,7 +122,7 @@ void setup()
   server.on("/config", []{ iotWebConf.handleConfig(); });
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
   TimerLib.setInterval_s(timerTick, 1);
-  if (init_globals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
+  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
   {
     Serial.println("Parameters successfully initialized.");
   }
@@ -155,7 +162,20 @@ void configSaved()
   Serial.println("Configuration was updated.");
 }
 
-boolean init_globals(float tz, int h, int m, int s, int ui, int mb)
+String makeTimeTN()
+{
+  int drajj_tawa = ((globalMinutes * 60) + globalSeconds + 150) / 300;
+  int kharej_wala_ma_harrarch_tawa = globalMinutes - (drajj_tawa * 5) + 3;
+  int heures_tawa = globalHours + ZID_SEAA[drajj_tawa];
+  if (heures_tawa != 12) { heures_tawa = (heures_tawa % 12); }
+  String tn_seaa = SEAA[heures_tawa];
+  String tn_prefixe_draj = DRAJ_PREFIXE[drajj_tawa];
+  String tn_draj = DRAJ[drajj_tawa];
+  String tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
+  
+}
+
+boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
 {
   if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 59) and (ui >= 0) and (mb <= 255) and (mb >= 0))
   {
@@ -176,7 +196,7 @@ boolean init_globals(float tz, int h, int m, int s, int ui, int mb)
 boolean formValidator()
 {
   Serial.println("Validating form.");
-  boolean valid = init_globals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()));
+  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()));
   if (valid)
   {
     Serial.println("Parameters successfully set.");
