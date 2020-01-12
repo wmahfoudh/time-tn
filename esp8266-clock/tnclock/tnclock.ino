@@ -255,7 +255,7 @@ boolean formValidator()
   Serial.println("Validating form.");
   boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()), atoi(server.arg(pixelpin.getId()).c_str()));
   if (valid)
-  { Serial.println("Parameters successfully set"); } else { Serial.println("One or more parameter are out of range."); }
+  { Serial.println("Parameters successfully set"); } else { Serial.println("One or more parameter are out of range"); }
   return valid;
 }
 
