@@ -11,10 +11,10 @@ const char wifiInitialApPassword[] = "welovetn";
 #define NUMBER_LEN 5
 
 // CONFIG_VERSION should be modified if config structure was changed
-#define CONFIG_VERSION "brad"
+#define CONFIG_VERSION "slan"
 
-// When CONFIG_PIN is pulled to ground on startup, the Thing will use the initial password to buld an AP (case of lost password)
-#define CONFIG_PIN D2
+// When GPIO CONFIG_PIN is pulled to ground on startup, the clock will use the initial password to build an AP (case of lost password)
+#define CONFIG_PIN 4
 
 // Status indicator pin. First it will light up, on Wifi connection it will blink, when connected to the Wifi it will turn off
 #define STATUS_PIN LED_BUILTIN
@@ -35,8 +35,9 @@ char setHoursValue[NUMBER_LEN];
 char setMinutesValue[NUMBER_LEN];
 char setSecondsValue[NUMBER_LEN];
 char maxBrightness[NUMBER_LEN];
+char ledDataPin[NUMBER_LEN];
 
-// Global variables initially read from saved parameters
+// Global variables, these are initially read from saved parameters
 int globalHours = 0;
 int globalMinutes = 0;
 int globalSeconds = 0;
@@ -45,7 +46,13 @@ int globalMaxBrightness = 0;
 int globalUpdateInterval = 0;
 int globalUpdateCurrentValue = 0;
 String globalTimeTN = "";
+int globalLedDataPin = 0;
 
+// NTPClient dectarations
+// Servers: pool.ntp.org or asia.pool.ntp.org or europe.pool.ntp.org or time.google.com or time.windows.com
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds, globalUpdateInterval*58);
+  
 // Tables used to convert the time into a Tunisian time string
 String DRAJ[13] = { "", "درج", "درجين", "ربع", "أربعة", "خمسة", "نص", "سبعة", "أربعة", "ربع", "درجين", "درج", "" };
 String SEAA[13] = { "نص الليل", "ماضي ساعة", "الساعتين", "ماضي تلاثة", "الأربعة", "الخمسة", "الستة", "السبعة", "الثمنية", "التسعة", "العشرة", "الحداش", "الأول" };
@@ -63,6 +70,7 @@ IotWebConfParameter minutesparam = IotWebConfParameter("Set minute", "setMinute"
 IotWebConfParameter secondsparam = IotWebConfParameter("Set second", "setSecond", setSecondsValue, NUMBER_LEN, "number", "0..59", NULL, "min='0' max='59' step='1'");
 IotWebConfSeparator separator_clock = IotWebConfSeparator("Clock settings");
 IotWebConfParameter maxbrightness = IotWebConfParameter("Max brightness", "maxBrightness", maxBrightness, NUMBER_LEN, "number", "0..255", NULL, "min='0' max='255' step='1'");
+IotWebConfParameter leddatapin = IotWebConfParameter("Led data pin", "ledDataPin", ledDataPin, NUMBER_LEN, "number", "0..16", NULL, "min='0' max='16' step='1'");
 
 // -- Javascript block added to the header.
 const char CUSTOMHTML_SCRIPT_INNER[] PROGMEM = "\n\
@@ -111,6 +119,7 @@ void setup()
   iotWebConf.addParameter(&secondsparam);
   iotWebConf.addParameter(&separator_clock);
   iotWebConf.addParameter(&maxbrightness);
+  iotWebConf.addParameter(&leddatapin);
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setFormValidator(&formValidator);
   iotWebConf.setWifiConnectionCallback(&wifiConnected);
@@ -124,8 +133,9 @@ void setup()
   server.on("/config", []{ iotWebConf.handleConfig(); });
   server.on("/raw", handleRaw);
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
+  timeClient.begin();
   TimerLib.setInterval_s(timerTick, 1);
-  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
+  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness), atoi(ledDataPin)))
   { Serial.println("Parameters successfully initialized"); } else { Serial.println("One or more parameter are out of range"); }
 }
 
@@ -194,25 +204,17 @@ void getInternetTime()
 {
   // Getting time from NTP server and update global time variables
   Serial.println("Retrieving NTP time...");
-  WiFiUDP ntpUDP;
-  NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
-  // or pool.ntp.org or asia.pool.ntp.org or europe.pool.ntp.org or time.google.com or time.windows.com
   timeClient.update();
   globalHours = timeClient.getHours();
-  Serial.print(globalHours);
-  Serial.print(":");
   globalMinutes = timeClient.getMinutes();
-  Serial.print(globalMinutes);
-  Serial.print(":");  
   globalSeconds = timeClient.getSeconds();
-  Serial.println(globalSeconds);
   globalUpdateCurrentValue = 0;
 }
 
-boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
+boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int ldp)
 {
   // Initialize global variables if passed parameters are okay
-  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0))
+  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0) and (ldp >=0) and (ldp <= 16))
   {
     globalHours = h;
     globalMinutes = m;
@@ -220,7 +222,9 @@ boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
     utcOffsetInSeconds = tz * 3600;
     globalMaxBrightness = mb;
     globalUpdateInterval = ui;
-    globalUpdateCurrentValue = 0;
+    globalLedDataPin = ldp;
+    timeClient.setUpdateInterval(globalUpdateInterval * 60);
+    timeClient.setTimeOffset(utcOffsetInSeconds);
     return true;
   }
   else { return false; }
@@ -236,7 +240,7 @@ void wifiConnected()
 boolean formValidator()
 {
   Serial.println("Validating form.");
-  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()));
+  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()), atoi(server.arg(leddatapin.getId()).c_str()));
   if (valid)
   { Serial.println("Parameters successfully set"); } else { Serial.println("One or more parameter are out of range."); }
   return valid;
