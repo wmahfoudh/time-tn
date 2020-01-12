@@ -35,7 +35,7 @@ char setHoursValue[NUMBER_LEN];
 char setMinutesValue[NUMBER_LEN];
 char setSecondsValue[NUMBER_LEN];
 char maxBrightness[NUMBER_LEN];
-char ledDataPin[NUMBER_LEN];
+char pixelPin[NUMBER_LEN];
 
 // Global variables, these are initially read from saved parameters
 int globalHours = 0;
@@ -46,10 +46,11 @@ int globalMaxBrightness = 0;
 int globalUpdateInterval = 0;
 int globalUpdateCurrentValue = 0;
 String globalTimeTN = "";
-int globalLedDataPin = 0;
+//variable use to hold the sum of masked lit pixels
+long unsigned globalTimePixel = 0;
+int globalPixelPin = 0;
 
 // NTPClient dectarations
-// Servers: pool.ntp.org or asia.pool.ntp.org or europe.pool.ntp.org or time.google.com or time.windows.com
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds, globalUpdateInterval*58);
   
@@ -59,6 +60,12 @@ String SEAA[13] = { "نص الليل", "ماضي ساعة", "الساعتين", 
 int ZID_SEAA[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 };
 String DRAJ_PREFIXE[13] = { "", "و", "و", "و", "و", "و", "و", "و", "غير", "غير", "غير", "غير", "" };
 String KHAREJ_WALA_MA_HARRARCH[6] = { "ما حررش", "ما حررش", "", "", "خارج", "خارج" };
+
+// Tables used for masking lit cells
+long unsigned iDRAJ[13] = { 0, 262144, 2097152, 1048576, 65536, 4194304, 131072, 524288, 65536, 1048576, 2097152, 262144, 0 };
+long unsigned iSEAA[13] = { 32, 10, 512, 6, 128, 2048, 8192, 256, 4096, 16, 64, 1024, 1 };
+long unsigned iDRAJ_PREFIXE[13] = { 0, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 16384, 16384, 16384, 16384, 0 };
+long unsigned iKHAREJ_WALA_MA_HARRARCH[6] = { 16777216, 16777216, 0, 0, 8388608, 8388608 };
 
 // Layout of the configuration page
 IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
@@ -70,7 +77,7 @@ IotWebConfParameter minutesparam = IotWebConfParameter("Set minute", "setMinute"
 IotWebConfParameter secondsparam = IotWebConfParameter("Set second", "setSecond", setSecondsValue, NUMBER_LEN, "number", "0..59", NULL, "min='0' max='59' step='1'");
 IotWebConfSeparator separator_clock = IotWebConfSeparator("Clock settings");
 IotWebConfParameter maxbrightness = IotWebConfParameter("Max brightness", "maxBrightness", maxBrightness, NUMBER_LEN, "number", "0..255", NULL, "min='0' max='255' step='1'");
-IotWebConfParameter leddatapin = IotWebConfParameter("Led data pin", "ledDataPin", ledDataPin, NUMBER_LEN, "number", "0..16", NULL, "min='0' max='16' step='1'");
+IotWebConfParameter pixelpin = IotWebConfParameter("Pixel pin", "pixelPin", pixelPin, NUMBER_LEN, "number", "0..16", NULL, "min='0' max='16' step='1'");
 
 // -- Javascript block added to the header.
 const char CUSTOMHTML_SCRIPT_INNER[] PROGMEM = "\n\
@@ -119,7 +126,7 @@ void setup()
   iotWebConf.addParameter(&secondsparam);
   iotWebConf.addParameter(&separator_clock);
   iotWebConf.addParameter(&maxbrightness);
-  iotWebConf.addParameter(&leddatapin);
+  iotWebConf.addParameter(&pixelpin);
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setFormValidator(&formValidator);
   iotWebConf.setWifiConnectionCallback(&wifiConnected);
@@ -135,7 +142,7 @@ void setup()
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
   timeClient.begin();
   TimerLib.setInterval_s(timerTick, 1);
-  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness), atoi(ledDataPin)))
+  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness), atoi(pixelPin)))
   { Serial.println("Parameters successfully initialized"); } else { Serial.println("One or more parameter are out of range"); }
 }
 
@@ -179,25 +186,31 @@ void configSaved()
 void makeTimeTN()
 {
   // Convert global time variables into a Tunisian time string
+  long unsigned new_TimePixel = 0;
   int drajj_tawa = ((globalMinutes * 60) + globalSeconds + 150) / 300;
   int kharej_wala_ma_harrarch_tawa = globalMinutes - (drajj_tawa * 5) + 3;
   int heures_tawa = globalHours + ZID_SEAA[drajj_tawa];
   if (heures_tawa != 12) { heures_tawa = (heures_tawa % 12); }
   String tn_seaa = SEAA[heures_tawa];
+  new_TimePixel += iSEAA[heures_tawa];
   String tn_prefixe_draj = DRAJ_PREFIXE[drajj_tawa];
+  new_TimePixel += iDRAJ_PREFIXE[drajj_tawa];
   String tn_draj = DRAJ[drajj_tawa];
+  new_TimePixel += iDRAJ[drajj_tawa];
   String tn_kharej_wala_ma_harrarch = KHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
+  new_TimePixel += iKHAREJ_WALA_MA_HARRARCH[kharej_wala_ma_harrarch_tawa];
   String new_Time = tn_seaa;
   if (tn_prefixe_draj != "") { new_Time += " " + tn_prefixe_draj; }
   if (tn_draj != "") { new_Time += " " + tn_draj; }
   if (tn_kharej_wala_ma_harrarch != "") { new_Time += " " + tn_kharej_wala_ma_harrarch; }
-  if (new_Time != globalTimeTN) { updateTimeTN(new_Time); }
+  if (new_Time != globalTimeTN) { updateTimeTN(new_Time, new_TimePixel); }
 }
 
-void updateTimeTN(String inputTime)
+void updateTimeTN(String inputTime, long unsigned inputTimePixel)
 {
   // Triggered only when the text of the Tunisian time changes to avoid useless updates
   globalTimeTN = inputTime;
+  globalTimePixel = inputTimePixel;
 }
 
 void getInternetTime()
@@ -211,10 +224,10 @@ void getInternetTime()
   globalUpdateCurrentValue = 0;
 }
 
-boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int ldp)
+boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int pp)
 {
   // Initialize global variables if passed parameters are okay
-  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0) and (ldp >=0) and (ldp <= 16))
+  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0) and (pp >=0) and (pp <= 16))
   {
     globalHours = h;
     globalMinutes = m;
@@ -222,7 +235,7 @@ boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int ldp)
     utcOffsetInSeconds = tz * 3600;
     globalMaxBrightness = mb;
     globalUpdateInterval = ui;
-    globalLedDataPin = ldp;
+    globalPixelPin = pp;
     timeClient.setUpdateInterval(globalUpdateInterval * 60);
     timeClient.setTimeOffset(utcOffsetInSeconds);
     return true;
@@ -240,7 +253,7 @@ void wifiConnected()
 boolean formValidator()
 {
   Serial.println("Validating form.");
-  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()), atoi(server.arg(leddatapin.getId()).c_str()));
+  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()), atoi(server.arg(pixelpin.getId()).c_str()));
   if (valid)
   { Serial.println("Parameters successfully set"); } else { Serial.println("One or more parameter are out of range."); }
   return valid;
@@ -282,4 +295,6 @@ void timerTick()
   Serial.print(globalSeconds);
   Serial.print(" ");
   Serial.println(globalTimeTN);
+  Serial.print("Lit pixels: ");
+  Serial.println(globalTimePixel);
 }
