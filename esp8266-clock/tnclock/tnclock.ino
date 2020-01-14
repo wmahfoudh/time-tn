@@ -2,6 +2,7 @@
 #include "uTimerLib.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include <NeoPixelBus.h>
 
 // WiFi related decarations
 const char thingName[] = "TnClock";
@@ -15,6 +16,14 @@ const char wifiInitialApPassword[] = "welovetn";
 
 // When GPIO CONFIG_PIN is pulled to ground on startup, the clock will use the initial password to build an AP (case of lost password)
 #define CONFIG_PIN 4
+
+// Color and saturation
+#define colorSaturation 255
+RgbColor white(colorSaturation);
+
+// The number of pixels in the clock is 25, from 0 to 24, the pin is GPIO3
+const uint16_t PixelCount = 25; 
+const uint8_t PixelPin = 3;
 
 // Status indicator pin. First it will light up, on Wifi connection it will blink, when connected to the Wifi it will turn off
 #define STATUS_PIN LED_BUILTIN
@@ -35,20 +44,22 @@ char setHoursValue[NUMBER_LEN];
 char setMinutesValue[NUMBER_LEN];
 char setSecondsValue[NUMBER_LEN];
 char maxBrightness[NUMBER_LEN];
-char pixelPin[NUMBER_LEN];
 
 // Global variables, these are initially read from saved parameters
 int globalHours = 0;
 int globalMinutes = 0;
 int globalSeconds = 0;
 long utcOffsetInSeconds = 0;
-int globalMaxBrightness = 0;
 int globalUpdateInterval = 0;
 int globalUpdateCurrentValue = 0;
 String globalTimeTN = "";
-//variable use to hold the sum of masked lit pixels
+int globalMaxBrightness = 100;
+
+//mask variable used to hold the sum of masked lit pixels
 long unsigned globalTimePixel = 0;
-int globalPixelPin = 0;
+
+// Declating the pixels
+NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(PixelCount, PixelPin);
 
 // NTPClient dectarations
 WiFiUDP ntpUDP;
@@ -77,7 +88,6 @@ IotWebConfParameter minutesparam = IotWebConfParameter("Set minute", "setMinute"
 IotWebConfParameter secondsparam = IotWebConfParameter("Set second", "setSecond", setSecondsValue, NUMBER_LEN, "number", "0..59", NULL, "min='0' max='59' step='1'");
 IotWebConfSeparator separator_clock = IotWebConfSeparator("Clock settings");
 IotWebConfParameter maxbrightness = IotWebConfParameter("Max brightness", "maxBrightness", maxBrightness, NUMBER_LEN, "number", "0..255", NULL, "min='0' max='255' step='1'");
-IotWebConfParameter pixelpin = IotWebConfParameter("Pixel pin", "pixelPin", pixelPin, NUMBER_LEN, "number", "0..16", NULL, "min='0' max='16' step='1'");
 
 // -- Javascript block added to the header.
 const char CUSTOMHTML_SCRIPT_INNER[] PROGMEM = "\n\
@@ -126,7 +136,6 @@ void setup()
   iotWebConf.addParameter(&secondsparam);
   iotWebConf.addParameter(&separator_clock);
   iotWebConf.addParameter(&maxbrightness);
-  iotWebConf.addParameter(&pixelpin);
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setFormValidator(&formValidator);
   iotWebConf.setWifiConnectionCallback(&wifiConnected);
@@ -142,8 +151,18 @@ void setup()
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
   timeClient.begin();
   TimerLib.setInterval_s(timerTick, 1);
-  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness), atoi(pixelPin)))
+  if (initGlobals(atof(timeZoneValue), atoi(setHoursValue), atoi(setMinutesValue), atoi(setSecondsValue), atoi(UpdateInterval), atoi(maxBrightness)))
   { Serial.println("Parameters successfully initialized"); } else { Serial.println("One or more parameter are out of range"); }
+  // Initializing Neopixels data line 
+  while (!Serial); // wait for serial attach
+  Serial.println();
+  Serial.println("Initializing Neopixels...");
+  Serial.flush();
+  // this resets all the neopixels to an off state
+  strip.Begin();
+  strip.Show();
+  Serial.println();
+  Serial.println("Running...");
 }
 
 void loop() 
@@ -211,6 +230,13 @@ void updateTimeTN(String inputTime, long unsigned inputTimePixel)
   // Triggered only when the text of the Tunisian time changes to avoid useless updates
   globalTimeTN = inputTime;
   globalTimePixel = inputTimePixel;
+  long unsigned mask = 1;
+  for (int i = 0; i < 25; i++) 
+  {
+    if ((globalTimePixel & mask) == mask)  { strip.SetPixelColor(i, white); }
+    mask = mask << 1;
+  }
+  strip.Show();
 }
 
 void getInternetTime()
@@ -224,10 +250,10 @@ void getInternetTime()
   globalUpdateCurrentValue = 0;
 }
 
-boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int pp)
+boolean initGlobals(float tz, int h, int m, int s, int ui, int mb)
 {
   // Initialize global variables if passed parameters are okay
-  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0) and (pp >=0) and (pp <= 16))
+  if ((tz <= 14) or (tz >= -12) and (h <= 23) and (h >= 0) and (m <= 59) and (m >= 0) and (s <= 59) and (s >= 0) and (ui <= 1440) and (ui >= 0) and (mb <= 255) and (mb >= 0))
   {
     globalHours = h;
     globalMinutes = m;
@@ -235,7 +261,6 @@ boolean initGlobals(float tz, int h, int m, int s, int ui, int mb, int pp)
     utcOffsetInSeconds = tz * 3600;
     globalMaxBrightness = mb;
     globalUpdateInterval = ui;
-    globalPixelPin = pp;
     timeClient.setUpdateInterval(globalUpdateInterval * 60);
     timeClient.setTimeOffset(utcOffsetInSeconds);
     return true;
@@ -253,7 +278,7 @@ void wifiConnected()
 boolean formValidator()
 {
   Serial.println("Validating form.");
-  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()), atoi(server.arg(pixelpin.getId()).c_str()));
+  boolean valid = initGlobals(atof(server.arg(timezomeparam.getId()).c_str()), atoi(server.arg(hoursparam.getId()).c_str()), atoi(server.arg(minutesparam.getId()).c_str()), atoi(server.arg(secondsparam.getId()).c_str()), atoi(server.arg(updateinterval.getId()).c_str()), atoi(server.arg(maxbrightness.getId()).c_str()));
   if (valid)
   { Serial.println("Parameters successfully set"); } else { Serial.println("One or more parameter are out of range"); }
   return valid;
