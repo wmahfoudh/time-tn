@@ -40,7 +40,7 @@ De 5 à 35 minutes on dit l’heure **h** et on ajoute **و (et)** suivi du nomb
 -	15 minutes = ربع RBO3 ou R'BOA (mot qui veut dire un quart d’heure, c'est une exception à la règle)
 -	20 minutes = أربعة ARB3A ou ARBAA (quatre)
 -	25 minutes = خمسة KHAMSA (cinq)
--	30 minutes = ستة SETTA (six)
+-	30 minutes = نص NOSS (mot qui veut dire demi (heure), c'est une autre exception à la règle)
 -	35 minutes = سبعة SAB3A ou SABAA (sept)
 
 De 40 à 55 minutes, on dit l’heure **h+1** et on ajoute **غير (moins)** suivi du nombres de **DRAJ** selon ce qui suit
