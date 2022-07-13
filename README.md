@@ -32,8 +32,7 @@ Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle rep
 A part midi et minuit, l’heure du soir est exprimée de la même manière que l’heure du matin
 
 ## Les règles pour les fractions d'heures
-Elles ne sont pas exprimées en minutes, l’unité est le **دْرَجْ** ou **DRAJ** qui vaut 5 minutes
-*DRAJ* est dérivé de *DRAJA* qui signifie marche (d'escalier)
+Elles ne sont pas exprimées en minutes, l’unité est le **دْرَجْ** ou **DRAJ** qui vaut 5 minutes. *DRAJ* est dérivé de *DRAJA* qui signifie marche (d'escalier)
 
 De 5 à 35 minutes on dit l’heure **h** et on ajoute **و (et)** suivi du nombre de **DRAJ** selon ce qui suit
 -	5 minutes = درج DRAJ
