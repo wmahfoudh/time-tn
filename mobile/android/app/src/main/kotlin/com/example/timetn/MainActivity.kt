@@ -1,4 +1,4 @@
-package com.example.timetn
+package tn.clock.timetn
 
 import io.flutter.embedding.android.FlutterActivity
 

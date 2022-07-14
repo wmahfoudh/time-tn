@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.timetn">
+    package="tn.clock.timetn">
    <application
         android:label="timetn"
         android:name="${applicationName}"
