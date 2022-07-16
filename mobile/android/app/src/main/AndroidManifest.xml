@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tn.clock.timetn">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="timetn"
         android:name="${applicationName}"

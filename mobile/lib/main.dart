@@ -69,8 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   persistentValue = newValue;
                 });
               },
-              controlAffinity:
-                  ListTileControlAffinity.leading,
+              controlAffinity: ListTileControlAffinity.leading,
             ),
             CheckboxListTile(
               title: Text(showTimeWhenLocked),
@@ -80,8 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   showWhenLockedValue = newValue;
                 });
               },
-              controlAffinity:
-                  ListTileControlAffinity.leading,
+              controlAffinity: ListTileControlAffinity.leading,
             ),
           ],
         ),
