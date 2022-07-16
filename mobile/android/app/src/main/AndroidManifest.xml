@@ -2,7 +2,7 @@
     package="tn.clock.timetn">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="timetn"
+        android:label="Time TN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -17,7 +17,7 @@ class _TimeTNState extends State<TimeTN> {
     return MaterialApp(
       title: 'Time TN',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.amber,
         fontFamily: 'Noto Kufi Arabic',
       ),
       home: const MyHomePage(title: 'الوقت بالتونسي'),
