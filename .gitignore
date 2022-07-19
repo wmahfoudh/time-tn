@@ -167,6 +167,7 @@ ModelManifest.xml
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
+Thumbs.db*
 
 # Folder config file
 Desktop.ini
