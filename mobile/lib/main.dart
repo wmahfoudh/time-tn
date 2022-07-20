@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:timetn/timetncalc.dart';
+import 'package:analog_clock/analog_clock.dart';
 
 void main() {
   runApp(const TimeTN());
@@ -39,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool? showWhenLockedValue = true;
   final String persistentNotification = 'Persistent notification';
   final String showTimeWhenLocked = 'Show time when phone is locked';
-  String timeNowText = 'الأربعة و درجيند رجين ما حررش';
+  String timeNowText = 'الأربعة';
   String timeNow = '21:34:56';
 
   @override
@@ -54,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final String formattedDateTime = _formatDateTime(now);
     setState(() {
       timeNow = formattedDateTime;
+      timeNowText = TimeTnCalc.eval(timeNow);
     });
   }
 
@@ -75,8 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
       ),
       body: Container(
-        //height: 200,
-        //width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/fond.png"),

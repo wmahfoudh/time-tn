@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl:
+  analog_clock: ^0.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
