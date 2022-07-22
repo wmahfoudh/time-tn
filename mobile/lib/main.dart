@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:timetn/timetncalc.dart';
-import 'package:analog_clock/analog_clock.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 void main() {
   runApp(const TimeTN());
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool? showWhenLockedValue = true;
   final String persistentNotification = 'Persistent notification';
   final String showTimeWhenLocked = 'Show time when phone is locked';
-  String timeNowText = 'الأربعة';
+  String timeNowText = '';
   String timeNow = '21:34:56';
 
   @override
@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       timeNow = formattedDateTime;
       timeNowText = TimeTnCalc.eval(timeNow);
+      //timeNowText = TimeTnCalc.eval('14:48:00');
     });
   }
 
@@ -78,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
       ),
       body: Container(
+        padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/fond.png"),
@@ -89,13 +91,22 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              AutoSizeText(
                 timeNowText,
-                style: Theme.of(context).textTheme.headline5,
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 0, 94, 122).withOpacity(1),
+                  fontSize: 40,
+                ),
+                minFontSize: 18,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
                 timeNow,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
+                  fontSize: 18,
+                ),
               ),
               const SizedBox(height: 50),
               CheckboxListTile(
