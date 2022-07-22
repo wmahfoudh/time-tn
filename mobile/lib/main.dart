@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
@@ -58,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       timeNow = formattedDateTime;
       timeNowText = TimeTnCalc.eval(timeNow);
       //timeNowText = TimeTnCalc.eval('14:48:00');
+      //timeNowText = TimeTnCalc.eval('23:00:00');
     });
   }
 
@@ -97,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: const Color.fromARGB(255, 0, 94, 122).withOpacity(1),
                   fontSize: 40,
                 ),
+                textAlign: TextAlign.center,
                 minFontSize: 18,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
