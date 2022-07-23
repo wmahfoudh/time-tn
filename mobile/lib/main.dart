@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:timetn/timetncalc.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const TimeTN());
@@ -38,15 +38,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool? persistentValue = true;
-  bool? showWhenLockedValue = true;
+  late SharedPreferences prefs;
+  late bool? persistentValue = true;
+  late bool? showWhenLockedValue = true;
   final String persistentNotification = 'Persistent notification';
   final String showTimeWhenLocked = 'Show time when phone is locked';
   String timeNowText = '';
   String timeNow = '21:34:56';
 
+  savePrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool('Persitent Notification', persistentValue ?? false);
+    prefs.setBool('Show When Locked', showWhenLockedValue ?? false);
+  }
+
+  loadPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      persistentValue = prefs.getBool('Persitent Notification') ?? true;
+      showWhenLockedValue = prefs.getBool('Show When Locked') ?? true;
+    });
+  }
+
   @override
   void initState() {
+    loadPrefs();
     timeNow = _formatDateTime(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
@@ -64,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return DateFormat('hh:mm:ss').format(dateTime);
+    return DateFormat('HH:mm:ss').format(dateTime);
   }
 
   void _exitApp() {
@@ -119,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     persistentValue = newValue;
                   });
+                  savePrefs();
                 },
                 controlAffinity: ListTileControlAffinity.leading,
               ),
@@ -129,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     showWhenLockedValue = newValue;
                   });
+                  savePrefs();
                 },
                 controlAffinity: ListTileControlAffinity.leading,
               ),
