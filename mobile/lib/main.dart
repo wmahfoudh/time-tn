@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               AutoSizeText(
                 timeNowText,
                 style: TextStyle(
-                  color: const Color.fromARGB(255, 0, 94, 122).withOpacity(1),
+                  color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
                   fontSize: 40,
                 ),
                 textAlign: TextAlign.center,
