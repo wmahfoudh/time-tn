@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:timetn/timetncalc.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:ui' as ui;
 
 void main() {
   runApp(const TimeTN());
@@ -92,73 +94,83 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/fond.png"),
-            colorFilter: ColorFilter.mode(Colors.white38, BlendMode.difference),
-            repeat: ImageRepeat.repeat,
+        appBar: AppBar(
+          title: Text(widget.title),
+          centerTitle: true,
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/fond.png"),
+              colorFilter:
+                  ColorFilter.mode(Colors.white38, BlendMode.difference),
+              repeat: ImageRepeat.repeat,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AutoSizeText(
+                  timeNowText,
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
+                    fontSize: 40,
+                  ),
+                  textAlign: TextAlign.center,
+                  minFontSize: 10,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  timeNow,
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
+                    fontSize: 18,
+                  ),
+                  textDirection: ui.TextDirection.rtl,
+                ),
+                const SizedBox(height: 50),
+                Visibility(
+                  visible: !kIsWeb,
+                  child: CheckboxListTile(
+                    title: Text(persistentNotification),
+                    value: persistentValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        persistentValue = newValue;
+                      });
+                      savePrefs();
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+                Visibility(
+                  visible: !kIsWeb,
+                  child: CheckboxListTile(
+                    title: Text(showTimeWhenLocked),
+                    value: showWhenLockedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        showWhenLockedValue = newValue;
+                      });
+                      savePrefs();
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AutoSizeText(
-                timeNowText,
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
-                  fontSize: 40,
-                ),
-                textAlign: TextAlign.center,
-                minFontSize: 18,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                timeNow,
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 50),
-              CheckboxListTile(
-                title: Text(persistentNotification),
-                value: persistentValue,
-                onChanged: (newValue) {
-                  setState(() {
-                    persistentValue = newValue;
-                  });
-                  savePrefs();
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-              CheckboxListTile(
-                title: Text(showTimeWhenLocked),
-                value: showWhenLockedValue,
-                onChanged: (newValue) {
-                  setState(() {
-                    showWhenLockedValue = newValue;
-                  });
-                  savePrefs();
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-            ],
+        floatingActionButton: Visibility(
+          visible: !kIsWeb,
+          child: FloatingActionButton(
+            onPressed: _exitApp,
+            tooltip: 'Exit',
+            child: const Icon(Icons.close_outlined),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _exitApp,
-        tooltip: 'Exit',
-        child: const Icon(Icons.close_outlined),
-      ),
-    );
+        ));
   }
 }
