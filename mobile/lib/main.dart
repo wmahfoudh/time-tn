@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -164,13 +165,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        floatingActionButton: Visibility(
-          visible: !kIsWeb,
-          child: FloatingActionButton(
-            onPressed: _exitApp,
-            tooltip: 'Exit',
-            child: const Icon(Icons.close_outlined),
+        floatingActionButton:
+            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Visibility(
+            visible: true,
+            child: FloatingActionButton(
+              onPressed: () =>
+                  Clipboard.setData(ClipboardData(text: timeNowText)),
+              tooltip: 'Copy',
+              child: const Icon(Icons.copy),
+            ),
           ),
-        ));
+          const SizedBox(height: 5),
+          Visibility(
+            visible: !kIsWeb,
+            child: FloatingActionButton(
+              onPressed: _exitApp,
+              tooltip: 'Exit',
+              child: const Icon(Icons.close_outlined),
+            ),
+          )
+        ]));
   }
 }
