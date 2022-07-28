@@ -1,8 +1,4 @@
-# timetn
-
-A new Flutter project.
-
-## Getting Started
+# Time TN Flutter implementation
 
 This project is a starting point for a Flutter application.
 
