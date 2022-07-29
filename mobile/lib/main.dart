@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -8,6 +8,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:ui' as ui;
+import 'package:clipboard/clipboard.dart';
 
 void main() {
   runApp(const TimeTN());
@@ -171,7 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
             visible: true,
             child: FloatingActionButton(
               onPressed: () =>
-                  Clipboard.setData(ClipboardData(text: timeNowText)),
+                  // Clipboard.setData(ClipboardData(text: timeNowText)),
+                  FlutterClipboard.copy(timeNowText),
               tooltip: 'Copy',
               child: const Icon(Icons.copy),
             ),
