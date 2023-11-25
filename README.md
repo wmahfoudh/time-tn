@@ -11,7 +11,12 @@ La bonne vieille manière de lire l'heure *en Tunisien*
 ![1155](./binaries/1155.png "الأول غير درج")
 
 ## Introduction
-Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. Ce projet la décrit et documente. Il présente aussi une implémentation en Python, C#, Dart et en C++. Cette dernière sert à la réalisation de l'horloge à mots (word clock) **TnClock** à l'aide d'un esp8266...
+Le [*Tunisien* ou *Derja*](https://fr.wikipedia.org/wiki/Arabe_tunisien) est un mélange d’Arabe, Berbère, Français, Italien, Turc, etc. utilisant l'alphabet Arabe. Les tunisiens ont une manière particulière d’exprimer l’heure. N'ayant trouvé aucune source qui la documente, j'ai initié ce projet. Il présente aussi une implémentation en :
+- Python
+- C# pour Windows
+- Dart pour Android/iOS/Web
+- C++ pour Arduino pouvant servir à la réalisation de l'horloge à mots (word clock) **TnClock** à l'aide d'un esp8266...
+Vous pouvez voir ce code en action sur le site [clock.tn](https://www.clock.tn/#/) 
 
 ## Les règles pour les heures
 Chaque heure a un terme spécifique pas forcément celui du nombre qu’elle représente
