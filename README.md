@@ -78,5 +78,5 @@ Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minute
 - Il faut avoir le [.net framework](http://bfy.tw/M9pg) 4.6.1 ou supérieur installé
 
 ## Application mobile
-- Android + iOS work in progress
+- Android + iOS in alpha version (please fork and improve!)
 - Web (partie de l'application mobile): demo en ligne sur [https://clock.tn/](https://clock.tn/)
