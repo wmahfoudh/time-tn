@@ -79,4 +79,7 @@ Dans l’algorithme proposé, et pour une heure exprimée en unités de 5 minute
 
 ## Application mobile
 - Android + iOS in alpha version (please fork and improve!)
-- Web (partie de l'application mobile): demo en ligne sur [https://clock.tn/](https://clock.tn/)
+- Web (partie de l'application mobile, pas recommandée, Flutter est trop lent!)
+
+## Application web (html-css-js)
+- Demo en ligne sur [https://clock.tn/](https://clock.tn/)
