@@ -1,0 +1,118 @@
+/* Font declarations for Noto Kufi Arabic - used for Arabic text display */
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('../fonts/NotoKufiArabic-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('../fonts/NotoKufiArabic-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* CSS Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base styles */
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Top banner with app title in Arabic */
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #FFC107;
+  color: black;
+  text-align: center;
+  padding: 11px;
+  z-index: 3;
+  direction: rtl;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Floating copy button in bottom right */
+.copy-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #FFC107;
+  color: black;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 3;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+/* Copy button hover and active states */
+.copy-button:hover {
+  transform: scale(1.1);
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+/* Main background with pattern */
+body {
+  background: url("../img/fond.png") repeat center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Semi-transparent overlay for better text readability */
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Central container for time display */
+.time-container {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Main time display in Tunisian Arabic */
+.timeNowText {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 1);
+}
+
+/* Secondary time display in 24-hour format */
+.timeNow {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.4);
+}
